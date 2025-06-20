@@ -1,0 +1,65 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: debug-statements
+    -   id: requirements-txt-fixer
+
+-   repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+    -   id: black
+        language_version: python3.9
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+    -   id: isort
+        name: isort (python)
+        args: ["--profile", "black"]
+
+-   repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+    -   id: flake8
+        additional_dependencies: [flake8-bugbear==23.7.10]
+        args: [--max-line-length=88, --extend-ignore=E203]
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+    -   id: mypy
+        additional_dependencies: [types-requests, types-python-dateutil, types-pyyaml]
+        args: [--strict, --ignore-missing-imports, --implicit-optional]
+        exclude: ^tests/
+
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+    -   id: python-use-type-annotations
+    -   id: python-check-mock-methods
+    -   id: python-check-blanket-noqa
+
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.9.0
+    hooks:
+    -   id: pyupgrade
+        args: [--py39-plus]
+
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.290
+    hooks:
+      - id: ruff
+        args: [--fix, --show-fixes]
+        types_or: [python, pyi, jupyter]
+
+ci:
+  autofix_commit_msg: "style: [pre-commit.ci] auto fixes [...]"
+  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
+  autoupdate_schedule: weekly
+  skip: [mypy]  # Skip mypy in CI as it's slow
+  submodules: false
